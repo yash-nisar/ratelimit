@@ -184,7 +184,7 @@ func (this *service) shouldRateLimitWorker(
 
 	snappedConfig, globalShadowMode := this.GetCurrentConfig()
 	logger.Infof("here is the shouldRateLimitWorkerFn")
-	logger.Infof(snappedConfig.Dump())
+	logger.Infof("%v", snappedConfig)
 	limitsToCheck, isUnlimited := this.constructLimitsToCheck(request, ctx, snappedConfig)
 
 	responseDescriptorStatuses := this.cache.DoLimit(ctx, request, limitsToCheck)
