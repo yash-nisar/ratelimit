@@ -184,7 +184,6 @@ func (this *service) shouldRateLimitWorker(
 
 	snappedConfig, globalShadowMode := this.GetCurrentConfig()
 	logger.Infof("here is the shouldRateLimitWorkerFn")
-	logger.Infof("%v", snappedConfig)
 	limitsToCheck, isUnlimited := this.constructLimitsToCheck(request, ctx, snappedConfig)
 
 	responseDescriptorStatuses := this.cache.DoLimit(ctx, request, limitsToCheck)
@@ -288,7 +287,6 @@ func (this *service) ShouldRateLimit(
 		}
 
 		logger.Infof("caught error during call")
-		logger.Infof(this.config.Dump())
 		logger.Infof("This is a manually inserted error message to test the error handling of the service.")
 		logger.Infof(request.String())
 		logger.Infof("error: %v", err)

@@ -8,6 +8,7 @@ import (
 
 	"github.com/envoyproxy/ratelimit/src/settings"
 	"github.com/envoyproxy/ratelimit/src/stats"
+	logger "github.com/sirupsen/logrus"
 
 	gostats "github.com/lyft/gostats"
 
@@ -51,6 +52,8 @@ func main() {
 			os.Exit(1)
 		}
 		configYaml := config.ConfigFileContentToYaml(finalPath, string(bytes))
+		logger.Infof("this is the config content...")
+		logger.Infof("yaml for config....", configYaml)
 		allConfigs = append(allConfigs, config.RateLimitConfigToLoad{Name: finalPath, ConfigYaml: configYaml})
 	}
 

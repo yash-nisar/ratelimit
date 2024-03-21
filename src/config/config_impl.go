@@ -121,6 +121,7 @@ func newRateLimitConfigError(name string, err string) RateLimitConfigError {
 // @param descriptors supplies the YAML descriptors to load.
 // @param statsManager that owns the stats.Scope.
 func (this *rateLimitDescriptor) loadDescriptors(config RateLimitConfigToLoad, parentKey string, descriptors []YamlDescriptor, statsManager stats.Manager) {
+	logger.Infof("loading descriptors my friendsssss....")
 	for _, descriptorConfig := range descriptors {
 		if descriptorConfig.Key == "" {
 			panic(newRateLimitConfigError(config.Name, "descriptor has empty key"))
@@ -245,6 +246,8 @@ func validateYamlKeys(fileName string, config_map map[interface{}]interface{}) {
 // @param config specifies the yamlRoot struct to load.
 func (this *rateLimitConfigImpl) loadConfig(config RateLimitConfigToLoad) {
 	root := config.ConfigYaml
+
+	logger.Infof("loadConfigMethod now..: ", config)
 
 	if root.Domain == "" {
 		panic(newRateLimitConfigError(config.Name, "config file cannot have empty domain"))
@@ -417,6 +420,9 @@ type rateLimitConfigLoaderImpl struct{}
 
 func (this *rateLimitConfigLoaderImpl) Load(
 	configs []RateLimitConfigToLoad, statsManager stats.Manager, mergeDomainConfigs bool) RateLimitConfig {
+	
+	logger.Infof("entering the load function now...")
+	logger.Infof("%v", configs)
 
 	return NewRateLimitConfigImpl(configs, statsManager, mergeDomainConfigs)
 }
