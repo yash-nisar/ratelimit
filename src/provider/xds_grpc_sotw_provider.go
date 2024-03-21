@@ -111,6 +111,7 @@ func (p *XdsGrpcSotwProvider) initializeAndWatch() *grpc.ClientConn {
 }
 
 func (p *XdsGrpcSotwProvider) watchConfigs() {
+	logger.Infof("entering watch configs...")
 	for {
 		resp, err := p.adsClient.Fetch()
 		if err != nil {
@@ -150,6 +151,7 @@ func (p *XdsGrpcSotwProvider) getGrpcTransportCredentials() grpc.DialOption {
 }
 
 func (p *XdsGrpcSotwProvider) sendConfigs(resources []*any.Any) {
+	logger.Infof("inside send configs...")
 	defer func() {
 		if e := recover(); e != nil {
 			p.configUpdateEventChan <- &ConfigUpdateEventImpl{err: e}
@@ -160,7 +162,11 @@ func (p *XdsGrpcSotwProvider) sendConfigs(resources []*any.Any) {
 	conf := make([]config.RateLimitConfigToLoad, 0, len(resources))
 	for _, res := range resources {
 		confPb := &rls_conf_v3.RateLimitConfig{}
+		logger.Infof("lets print the protobuff here...")
+		logger.Infof("protobuf for config....", res)
 		err := anypb.UnmarshalTo(res, confPb, proto.UnmarshalOptions{})
+		logger.Infof("lets print the confPb here...")
+		logger.Infof("confPb for config....", confPb)
 		if err != nil {
 			logger.Errorf("Error while unmarshalling config from xDS Management Server: %s", err.Error())
 			p.adsClient.Nack(err.Error())
@@ -168,6 +174,8 @@ func (p *XdsGrpcSotwProvider) sendConfigs(resources []*any.Any) {
 		}
 
 		configYaml := config.ConfigXdsProtoToYaml(confPb)
+		logger.Infof("lets print the configYaml here...")
+		logger.Infof("yaml for config....", configYaml)
 		conf = append(conf, config.RateLimitConfigToLoad{Name: confPb.Name, ConfigYaml: configYaml})
 	}
 	rlSettings := settings.NewSettings()
