@@ -128,6 +128,8 @@ func (p *XdsGrpcSotwProvider) watchConfigs() {
 func (p *XdsGrpcSotwProvider) getGrpcConnection() (*grpc.ClientConn, error) {
 	backOff := grpc_retry.BackoffLinearWithJitter(p.settings.ConfigGrpcXdsServerConnectRetryInterval, 0.5)
 	logger.Infof("Dialing xDS Management Server: '%s'", p.settings.ConfigGrpcXdsServerUrl)
+	logger.Infof("Printing all settings...")
+	logger.Infof("settings for config....", p.settings)
 	return grpc.Dial(
 		p.settings.ConfigGrpcXdsServerUrl,
 		p.getGrpcTransportCredentials(),
